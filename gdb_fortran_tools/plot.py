@@ -21,15 +21,19 @@ class Legend:
         plt.legend(self.legend)
 
 
-def plot_1d(args, plot_function):
+def plot_1d(args, plot_function, drawstyle='steps-mid'):
     legend = Legend()
 
+    kw = {}
+    if drawstyle is not None: kw['drawstyle'] = drawstyle
+    
     for arg in args.split():
         data = data_extractor.extract_var(arg)
 
         if data.ndim == 2 and not np.iscomplexobj(data):
             for i, row in enumerate(data):
-                plot_function(row)
+                nx = row[1:].size
+                plot_function(np.arange(nx+1)+1, row, **kw)
                 legend.add(f"{arg}[{i}]")
         elif data.ndim == 1:
             if np.iscomplexobj(data):
@@ -40,7 +44,8 @@ def plot_1d(args, plot_function):
                 legend.add(f"imag({arg})")
                 legend.add(f"abs({arg})")
             else:
-                plot_function(data)
+                nx = data.size
+                plot_function(np.arange(nx)+1, data, **kw)
                 legend.add(arg)
         else:
             raise PlottingError(f"Unsuitable for plotting: {arg}")
@@ -97,6 +102,25 @@ class Scatter(gdb.Command):
         plt.show()
 
 
+class Imshow(gdb.Command):
+    def __init__(self):
+        super(Imshow, self).__init__("imshow", gdb.COMMAND_OBSCURE)
+
+    def invoke(self, args, from_tty):
+        img = data_extractor.extract_var(args)
+        if img.ndim != 2:
+            raise PlottingError(f"Unsuitable for imshow: {args}")
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        nx = img.shape
+        ax.imshow(img,
+                  extent=(0.5, nx[1]+0.5, 0.5, nx[0]+0.5),
+                  origin='lower',
+                  interpolation='none')
+        plt.show()
+
+
+        
 class Plot3D(gdb.Command):
     def __init__(self):
         super(Plot3D, self).__init__("plot3d", gdb.COMMAND_OBSCURE)
@@ -160,7 +184,7 @@ class Hist(gdb.Command):
 
     def invoke(self, args, from_tty):
         hist = lambda x: plt.hist(x, bins="auto")
-        plot_1d(args, hist)
+        plot_1d(args, hist, drawstyle=None)
 
 
 class FFT(gdb.Command):
@@ -179,7 +203,7 @@ class FFT(gdb.Command):
                     plt.plot(fft_db(row))
                     legend.add(f"{arg}[{i}]")
             elif data.ndim == 1:
-                plt.plot(fft_db(data))
+                plt.plot(fft_db(data), drawstyle='steps-mid')
                 legend.add(arg)
             else:
                 raise PlottingError(f"Unsuitable for plotting: {arg}")
@@ -191,6 +215,7 @@ class FFT(gdb.Command):
 
 
 Plot()
+Imshow()
 Scatter()
 Plot3D()
 Scatter3D()

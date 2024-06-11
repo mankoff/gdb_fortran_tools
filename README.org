@@ -1,0 +1,159 @@
+
+* gdb_fortran_tools
+
+* Table of contents                               :toc_3:noexport:
+:PROPERTIES:
+:CUSTOM_ID: toc
+:END:
+- [[#gdb_fortran_tools][gdb_fortran_tools]]
+- [[#introduction][Introduction]]
+- [[#installation][Installation]]
+- [[#usage-example][Usage example]]
+- [[#supported-types][Supported types]]
+- [[#warnings][Warnings]]
+- [[#requirements][Requirements]]
+- [[#acknowledgements][Acknowledgements]]
+
+* Introduction
+:PROPERTIES:
+:CUSTOM_ID: intro
+:END:
+
+Support more advanced =gdb= debugging of Fortran code
++ [X] Generic access to many basic numpy array operators: sum, min, max, log10, etc.
++ [X] Graphics: plot, imshow, scatter
++ [X] Save data: pickle, CSV
+
+* Installation
+:PROPERTIES:
+:CUSTOM_ID: install
+:END:
+
+#+BEGIN_SRC bash :exports both :results verbatim
+git clone https://github.com/mankoff/gdb_fortran_tools
+#+END_SRC
+
+Set an environment variable to that location (perhaps in your =.bashrc= or other init script).
+
+#+BEGIN_SRC bash :exports both :results verbatim
+export GFT_DIR=/path/to/gdb_fortran_tools
+#+END_SRC
+
+Edit your =~/.gdbinit= file to load =gdb_fortran_tools=
+
+#+BEGIN_SRC python
+python
+import os
+import sys
+if 'GFT_DIR' not in os.environ:
+   print(f'WARNING: environmental var GFT_DIR not found')
+else:
+   sys.path.insert(0, os.path.expanduser(os.environ['GFT_DIR']))
+   try:
+      import gdb_fortran_tools
+   except:
+      print("WARNING: Could not import gdb_fortran_tools")
+end
+#+END_SRC
+
+* Usage example
+:PROPERTIES:
+:CUSTOM_ID: example
+:END:
+
+With the following code in =example.F90=
+
+#+BEGIN_SRC f90 :exports both :tangle example.F90
+program main
+  real, allocatable, DIMENSION(:) :: x, y
+  real, allocatable, DIMENSION(:,:) :: xy
+  INTEGER :: im, jm, i,j
+
+  im = 4
+  jm = 5
+  
+  allocate(x(im))
+  allocate(y(jm))
+  allocate(xy(im,jm))
+
+  do i=1,im
+     x(i) = i
+     do j=1,jm
+        y(j) = j
+        xy(i,j) = x(i)*y(j)
+     end do
+  end do
+  
+  print *, x
+  print *, y
+  print *, xy
+end program main
+#+END_SRC
+
+Compile it for debugging with
+
+#+BEGIN_SRC bash :exports both :results verbatim
+gfortran -g example.F90
+#+END_SRC
+
+Run gdb:
+
+#+BEGIN_SRC bash :exports both :results verbatim
+gdb ./a.out
+start
+break 21
+continue
+p x
+ptype x
+np sum x
+np sum y
+pycmd print xy
+plot x
+imshow xy
+plot xy
+plot x y(2:5)
+scatter x y(2:5)
+savecsv xy.csv xy
+#+END_SRC
+
+* Supported types
+
+#+BEGIN_SRC f90 :exports both
+real*4, dimension(:)
+real*8, dimension(:,:)
+integer*4, dimension(:)
+integer*8, dimension(:,:)
+#+END_SRC
+
+* Warnings
+:PROPERTIES:
+:CUSTOM_ID: warn
+:END:
+
+Note: If gdb reports
+
+#+BEGIN_EXAMPLE
+(gdb) ptype foo
+type = real(kind=8), allocatable (72,0:47)
+#+END_EXAMPLE
+
+Then you need to use the syntax =imshow foo(:,:)=
+
+* Requirements
+:PROPERTIES:
+:CUSTOM_ID: req
+:END:
+
+- GDB >= 7.0
+- Python 3
+- NumPy
+- Matplotlib
+
+
+* Acknowledgements
+:PROPERTIES:
+:CUSTOM_ID: ack
+:END:
+
+Thanks to [[https://github.com/X-Neon][X-Neon]] and [[https://github.com/X-Neon/gdbplotlib][gdbplotlib]].
+

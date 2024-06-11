@@ -1,20 +1,20 @@
 import setuptools
 
-with open('README.md') as readme:
+with open('README.org') as readme:
     long_description = readme.read()
 
 setuptools.setup(
-    name='gdbplotlib',
-    version='0.2.0',
-    author='George Cholerton',
-    author_email='gcholerton@gmail.com',
-    url='https://github.com/X-Neon/gdbplotlib',
+    name='gdb_fortran_tools',
+    version='0.0.1',
+    author='Ken Mankoff',
+    author_email='mankoff@gmail.com',
+    url='https://github.com/mankoff/gdb_fortran_tools',
     packages=setuptools.find_packages(),
     install_requires=['numpy', 'matplotlib'],
     python_requires='>=3',
-    description='Plotting and exporting of variables from GDB',
+    description='Plotting and exporting of variables from GDB for FORTRAN programmers',
     long_description=long_description,
-    long_description_content_type='text/markdown',
+    long_description_content_type='text/org',
     keywords=['gdb', 'debug'],
     classifiers=[
         'Development Status :: 3 - Alpha',

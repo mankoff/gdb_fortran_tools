@@ -1,35 +1,19 @@
 import pickle
+import numpy as np
 
 import gdb  # pylint: disable=E0401
 
 from . import data_extractor
 from . import util
 
-try:
-    import scipy.io
-    SCIPY_AVAILABLE = True
-except ImportError:
-    SCIPY_AVAILABLE = False
-
-
-class SaveMat(gdb.Command):
+class SaveCSV(gdb.Command):
     def __init__(self):
-        super(SaveMat, self).__init__("savemat", gdb.COMMAND_OBSCURE)
+        super(SaveCSV, self).__init__("savecsv", gdb.COMMAND_OBSCURE)
 
     def invoke(self, args, from_tty):
-        if not SCIPY_AVAILABLE:
-            raise RuntimeError("Scipy not available")
-
-        out = {}
         filename, var = args.split()
-
-        for v in var:
-            data = data_extractor.extract_var(v)
-            base_var, _ = util.split_variable_and_slice(v)
-            dict_name = util.strip_non_alphanumeric(base_var)
-            out[dict_name] = data
-
-        scipy.io.savemat(filename, out)
+        data = data_extractor.extract_var(var)
+        np.savetxt(filename, data, delimiter=",")
 
 
 class SavePy(gdb.Command):
@@ -53,6 +37,6 @@ class Save(gdb.Command):
         data.tofile(filename)
 
 
-SaveMat()
+SaveCSV()
 SavePy()
 Save()
