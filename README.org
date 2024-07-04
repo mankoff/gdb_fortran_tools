@@ -11,6 +11,7 @@
 - [[#usage-example][Usage example]]
 - [[#supported-types][Supported types]]
 - [[#warnings][Warnings]]
+- [[#additional-hints][Additional hints]]
 - [[#requirements][Requirements]]
 - [[#acknowledgements][Acknowledgements]]
 
@@ -138,6 +139,20 @@ type = real(kind=8), allocatable (72,0:47)
 #+END_EXAMPLE
 
 Then you need to use the syntax =imshow foo(:,:)=
+
+* Additional hints
+
+You can create custom =gdb= commands that build on commands provided here. For example to find the range of an array, add this to your =~/.gdbinit=
+
+#+BEGIN_SRC bash :exports both :results verbatim
+define mm
+    np min $arg0
+    np max $arg0
+end            
+document mm
+    print min and max of an array or vector. Uses gdb_fortran_tools.
+end	
+#+END_SRC
 
 * Requirements
 :PROPERTIES:
