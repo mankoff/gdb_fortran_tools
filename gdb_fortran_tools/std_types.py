@@ -212,5 +212,11 @@ class FortranArray(TypeHandler):
             for i in range(index[0]):
                 for j in range(index[1]):
                     arr[j,i] = gdb_value[j+1][i+1]
+        if np.shape(index)[0] == 3:
+            arr = np.zeros(index).T
+            for i in range(index[0]):
+                for j in range(index[1]):
+                    for k in range(index[2]):
+                        arr[k,j,i] = gdb_value[k+1][j+1][i+1]
         return arr.astype(self.np_dtype.type)
 

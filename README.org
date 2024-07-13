@@ -122,8 +122,10 @@ savecsv xy.csv xy
 #+BEGIN_SRC f90 :exports both
 real*4, dimension(:)
 real*8, dimension(:,:)
+real*8, dimension(:,:,:)
 integer*4, dimension(:)
 integer*8, dimension(:,:)
+integer*8, dimension(:,:,:)
 #+END_SRC
 
 * Warnings
