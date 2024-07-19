@@ -120,6 +120,25 @@ class Imshow(gdb.Command):
         plt.show()
 
 
+class Logshow(gdb.Command):
+    def __init__(self):
+        super(Logshow, self).__init__("logshow", gdb.COMMAND_OBSCURE)
+
+    def invoke(self, args, from_tty):
+        img = data_extractor.extract_var(args)
+        if img.ndim != 2:
+            raise PlottingError(f"Unsuitable for imshow: {args}")
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        nx = img.shape
+        img[np.where(img == 0)] = np.nan
+        ax.imshow(np.log10(img),
+                  extent=(0.5, nx[1]+0.5, 0.5, nx[0]+0.5),
+                  origin='lower',
+                  interpolation='none')
+        plt.show()
+
+        
         
 class Plot3D(gdb.Command):
     def __init__(self):
@@ -216,6 +235,7 @@ class FFT(gdb.Command):
 
 Plot()
 Imshow()
+Logshow()
 Scatter()
 Plot3D()
 Scatter3D()
