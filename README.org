@@ -126,6 +126,7 @@ real*8, dimension(:,:,:)
 integer*4, dimension(:)
 integer*8, dimension(:,:)
 integer*8, dimension(:,:,:)
+logical
 #+END_SRC
 
 * Warnings

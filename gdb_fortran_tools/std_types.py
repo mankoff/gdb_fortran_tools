@@ -184,7 +184,8 @@ class FortranArray(TypeHandler):
         return np.any(
             [_ in str(gdb_type) for _ in 
              ["real(kind=4)", "real(kind=8)",
-              "integer(kind=4)", "integer(kind=4)"]
+              "integer(kind=4)", "integer(kind=8)",
+              "logical(kind=4)"]
              ])
 
     def shape(self, gdb_value: gdb.Value) -> Tuple[Optional[int], ...]:
@@ -194,7 +195,9 @@ class FortranArray(TypeHandler):
 
     def contained_type(self, gdb_value: gdb.Value) -> Optional[gdb.Type]:
         dtype = str(gdb.types.get_basic_type(gdb_value.type))
-        if "kind=4" in dtype:
+        if "logical" in dtype:
+            size = "bool"
+        elif "kind=4" in dtype:
             size = "f4"
         elif "kind=8" in dtype:
             size = "f8"
@@ -208,12 +211,12 @@ class FortranArray(TypeHandler):
         if np.shape(index)[0] == 1:
             arr = np.array([gdb_value[i+1] for i in range(index[0])])
         if np.shape(index)[0] == 2:
-            arr = np.zeros(index).T
+            arr = np.zeros(index).T.astype(self.np_dtype)
             for i in range(index[0]):
                 for j in range(index[1]):
                     arr[j,i] = gdb_value[j+1][i+1]
         if np.shape(index)[0] == 3:
-            arr = np.zeros(index).T
+            arr = np.zeros(index).T.astype(self.np_dtype)
             for i in range(index[0]):
                 for j in range(index[1]):
                     for k in range(index[2]):
