@@ -113,10 +113,11 @@ class Imshow(gdb.Command):
         fig = plt.figure()
         ax = fig.add_subplot(111)
         nx = img.shape
-        ax.imshow(img,
-                  extent=(0.5, nx[1]+0.5, 0.5, nx[0]+0.5),
-                  origin='lower',
-                  interpolation='none')
+        p = ax.imshow(img,
+                      extent=(0.5, nx[1]+0.5, 0.5, nx[0]+0.5),
+                      origin='lower',
+                      interpolation='none')
+        plt.colorbar(p)
         plt.show()
 
 
@@ -132,12 +133,12 @@ class Logshow(gdb.Command):
         ax = fig.add_subplot(111)
         nx = img.shape
         img[np.where(img == 0)] = np.nan
-        ax.imshow(np.log10(img),
-                  extent=(0.5, nx[1]+0.5, 0.5, nx[0]+0.5),
-                  origin='lower',
-                  interpolation='none')
+        p = ax.imshow(np.log10(img),
+                      extent=(0.5, nx[1]+0.5, 0.5, nx[0]+0.5),
+                      origin='lower',
+                      interpolation='none')
+        plt.colorbar(p)
         plt.show()
-
         
         
 class Plot3D(gdb.Command):
