@@ -22,6 +22,7 @@
 
 Support more advanced =gdb= debugging of Fortran code
 + [X] Generic access to many basic numpy array operators: sum, min, max, log10, etc.
++ [X] Access to custom complex on-liners
 + [X] Graphics: plot, imshow, scatter
 + [X] Save data: pickle, CSV
 
@@ -104,16 +105,30 @@ gdb ./a.out
 start
 break 21
 continue
+
+# traditional GDB commands
 p x
 ptype x
+
+# Simple numpy accessors
 np sum x
-np sum y
-pycmd print xy
+np max y
+np log10 xy
+
+# Plots
 plot x
 imshow xy
+logshow xy
 plot xy
 plot x y(2:5)
 scatter x y(2:5)
+
+# arbitrary Python commands
+pycmd xy print(_)
+pycmd xy np.min(_[np.where(_ != 0)])
+pycmd xy [item for item in _.flatten() if (item % 2) == 0]
+
+# save to CSV
 savecsv xy.csv xy
 #+END_SRC
 
