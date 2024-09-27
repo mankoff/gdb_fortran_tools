@@ -9,6 +9,7 @@
 - [[#introduction][Introduction]]
 - [[#installation][Installation]]
 - [[#usage-example][Usage example]]
+- [[#commands][Commands]]
 - [[#supported-types][Supported types]]
 - [[#warnings][Warnings]]
 - [[#additional-hints][Additional hints]]
@@ -132,15 +133,30 @@ pycmd xy [item for item in _.flatten() if (item % 2) == 0]
 savecsv xy.csv xy
 #+END_SRC
 
+* Commands
+
++ Graphical
+  + imshow :: Display 2D array using =matplotlib.pyplot.imshow=
+  + imshow0 :: Same as =imshow= but set 0 to NaN (colorbar scaling)
+  + logshow :: Same as =imshow= but display =np.log10()= of data
+  + scatter :: Display scatter plot of two vectors
+  + plot3d :: Display 3D plot of 2D array
+  + scatter3d :: Display 3D scatter plot
+  + hist :: Display histogram of vector
+  + fft :: Display FFT of vector
++ Numerical
+  + np <function> <variable> :: Call =np.function(variable)= for any numpy function
+  + pycmd <variable> <statements(_)> :: Run any sequence of valid one-line Python =statements= on variable. Within =statement=, access variable via =_= (underscore)
++ I/O
+  + savecsv <file.csv> <variable> :: Save =variable= to =file.csv=
+  + savepy <filename> <variable> :: Save =variable= to =filename= in Python pickle format
+  + save <file> <variable> :: Save =variable= to =file= using numpy =tofile= function
+
 * Supported types
 
 #+BEGIN_SRC f90 :exports both
-real*4, dimension(:)
-real*8, dimension(:,:)
-real*8, dimension(:,:,:)
-integer*4, dimension(:)
-integer*8, dimension(:,:)
-integer*8, dimension(:,:,:)
+real*{4,8}, dimension(:), dimension(:,:), dimension(:,:,:)
+integer*{4,8}, dimension(:), dimension(:,:), dimension(:,:,:)
 logical
 #+END_SRC
 
