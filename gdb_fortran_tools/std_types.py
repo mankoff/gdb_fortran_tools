@@ -185,7 +185,7 @@ class FortranArray(TypeHandler):
             [_ in str(gdb_type).lower() for _ in
              ["real(4)", "real(kind=4)",
               "real(8)", "real(kind=8)",
-              "integer(4)", "integer(knid=4)",
+              "integer(4)", "integer(kind=4)",
               "integer(8)", "integer(kind=8)",
               "logical"]
              ])
