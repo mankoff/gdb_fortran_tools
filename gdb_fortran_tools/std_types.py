@@ -182,10 +182,12 @@ class FortranArray(TypeHandler):
     @staticmethod
     def can_handle(gdb_type: gdb.Type) -> bool:
         return np.any(
-            [_ in str(gdb_type) for _ in 
-             ["real(kind=4)", "real(kind=8)",
-              "integer(kind=4)", "integer(kind=8)",
-              "logical(kind=4)"]
+            [_ in str(gdb_type).lower() for _ in
+             ["real(4)", "real(kind=4)",
+              "real(8)", "real(kind=8)",
+              "integer(4)", "integer(knid=4)",
+              "integer(8)", "integer(kind=8)",
+              "logical"]
              ])
 
     def shape(self, gdb_value: gdb.Value) -> Tuple[Optional[int], ...]:
