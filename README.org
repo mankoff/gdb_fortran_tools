@@ -12,6 +12,8 @@
 - [[#commands][Commands]]
 - [[#supported-types][Supported types]]
 - [[#warnings][Warnings]]
+  - [[#array-indexing][Array indexing]]
+  - [[#allocatable-arrays][Allocatable arrays]]
 - [[#additional-hints][Additional hints]]
 - [[#requirements][Requirements]]
 - [[#acknowledgements][Acknowledgements]]
@@ -165,6 +167,12 @@ logical
 :CUSTOM_ID: warn
 :END:
 
+** Array indexing
+
++ Fortran uses 1-based array indexing
++ Python uses 0-based array indexing
+
+** Allocatable arrays
 Note: If gdb reports
 
 #+BEGIN_EXAMPLE
