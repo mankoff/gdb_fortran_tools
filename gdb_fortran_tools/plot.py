@@ -107,14 +107,21 @@ class Imshow(gdb.Command):
         super(Imshow, self).__init__("imshow", gdb.COMMAND_OBSCURE)
 
     def invoke(self, args, from_tty):
-        img = data_extractor.extract_var(args)
+        if len(args.split()) == 1:
+            img = data_extractor.extract_var(args)
+            y = np.arange(img.shape[0])
+            x = np.arange(img.shape[1])
+        else:
+            img = data_extractor.extract_var(args.split()[0])
+            x = data_extractor.extract_var(args.split()[1])
+            y = data_extractor.extract_var(args.split()[2])
+
         if img.ndim != 2:
             raise PlottingError(f"Unsuitable for imshow: {args}")
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        nx = img.shape
         p = ax.imshow(img,
-                      extent=(0.5, nx[1]+0.5, 0.5, nx[0]+0.5),
+                      extent=(x[0]-0.5, x[-1]+0.5, y[0]-0.5, y[-1]+0.5),
                       origin='lower',
                       interpolation='none')
         plt.colorbar(p)
@@ -126,15 +133,21 @@ class Imshow0(gdb.Command):
         super(Imshow0, self).__init__("imshow0", gdb.COMMAND_OBSCURE)
 
     def invoke(self, args, from_tty):
-        img = data_extractor.extract_var(args)
+        if len(args.split()) == 1:
+            img = data_extractor.extract_var(args)
+            y = np.arange(img.shape[0])
+            x = np.arange(img.shape[1])
+        else:
+            img = data_extractor.extract_var(args.split()[0])
+            x = data_extractor.extract_var(args.split()[1])
+            y = data_extractor.extract_var(args.split()[2])
+
         if img.ndim != 2:
             raise PlottingError(f"Unsuitable for imshow: {args}")
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        nx = img.shape
-        img[img == 0] = np.nan
         p = ax.imshow(img,
-                      extent=(0.5, nx[1]+0.5, 0.5, nx[0]+0.5),
+                      extent=(x[0]-0.5, x[-1]+0.5, y[0]-0.5, y[-1]+0.5),
                       origin='lower',
                       interpolation='none')
         plt.colorbar(p)
@@ -145,15 +158,22 @@ class Logshow(gdb.Command):
         super(Logshow, self).__init__("logshow", gdb.COMMAND_OBSCURE)
 
     def invoke(self, args, from_tty):
-        img = data_extractor.extract_var(args)
+        if len(args.split()) == 1:
+            img = data_extractor.extract_var(args)
+            y = np.arange(img.shape[0])
+            x = np.arange(img.shape[1])
+        else:
+            img = data_extractor.extract_var(args.split()[0])
+            x = data_extractor.extract_var(args.split()[1])
+            y = data_extractor.extract_var(args.split()[2])
+
         if img.ndim != 2:
             raise PlottingError(f"Unsuitable for imshow: {args}")
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        nx = img.shape
         img[np.where(img == 0)] = np.nan
         p = ax.imshow(np.log10(img),
-                      extent=(0.5, nx[1]+0.5, 0.5, nx[0]+0.5),
+                      extent=(x[0]-0.5, x[-1]+0.5, y[0]-0.5, y[-1]+0.5),
                       origin='lower',
                       interpolation='none')
         plt.colorbar(p)

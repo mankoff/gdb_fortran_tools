@@ -82,9 +82,9 @@ program main
   allocate(xy(im,jm))
 
   do i=1,im
-     x(i) = i
+     x(i) = i+3
      do j=1,jm
-        y(j) = j
+        y(j) = j+5
         xy(i,j) = x(i)*y(j)
      end do
   end do
@@ -105,9 +105,8 @@ Run gdb:
 
 #+BEGIN_SRC bash :exports both :results verbatim
 gdb ./a.out
-start
-break 21
-continue
+break 23
+run
 
 # traditional GDB commands
 p x
@@ -121,7 +120,10 @@ np log10 xy
 # Plots
 plot x
 imshow xy
+imshow xy x y
+imshow0 xy x y
 logshow xy
+logshow xy x y
 plot xy
 plot x y(2:5)
 scatter x y(2:5)
