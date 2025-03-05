@@ -144,6 +144,9 @@ class Imshow0(gdb.Command):
 
         if img.ndim != 2:
             raise PlottingError(f"Unsuitable for imshow: {args}")
+
+        img[img == 0] = np.nan
+
         fig = plt.figure()
         ax = fig.add_subplot(111)
         p = ax.imshow(img,
