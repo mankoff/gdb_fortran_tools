@@ -34,6 +34,10 @@ Support more advanced =gdb= debugging of Fortran code
 :CUSTOM_ID: install
 :END:
 
+You need a Python environment with =matplotlib=, =numpy=, and =gdb=.
+
+Install this software with:
+
 #+BEGIN_SRC bash :exports both :results verbatim
 git clone https://github.com/mankoff/gdb_fortran_tools
 #+END_SRC
@@ -205,8 +209,9 @@ end
 
 - GDB >= 7.0
 - Python 3
-- NumPy
-- Matplotlib
+  - NumPy
+  - Matplotlib
+  - gdb (the Python package)
 
 
 * Acknowledgements
