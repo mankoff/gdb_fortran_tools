@@ -23,6 +23,14 @@
 :CUSTOM_ID: intro
 :END:
 
+Example command and output
+
+#+BEGIN_SRC :exports both
+(gdb) logshow landice_roi_mod::landice_ds%roi(:,:)
+#+END_SRC
+
+[[./example.png]]
+
 Support more advanced =gdb= debugging of Fortran code
 + [X] Generic access to many basic numpy array operators: sum, min, max, log10, etc.
 + [X] Access to custom complex on-liners
