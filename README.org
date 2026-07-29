@@ -155,6 +155,7 @@ savecsv xy.csv xy
   + imshow :: Display 2D array using =matplotlib.pyplot.imshow=
   + imshow0 :: Same as =imshow= but set 0 to NaN (colorbar scaling)
   + logshow :: Same as =imshow= but display =np.log10()= of data
+  + abslogshow :: Same as =logshow= but display =np.log10(abs())= of data
   + scatter :: Display scatter plot of two vectors
   + plot3d :: Display 3D plot of 2D array
   + scatter3d :: Display 3D scatter plot

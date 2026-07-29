@@ -182,6 +182,32 @@ class Logshow(gdb.Command):
         plt.colorbar(p)
         plt.show()
         
+
+class Abslogshow(gdb.Command):
+    def __init__(self):
+        super(Abslogshow, self).__init__("abslogshow", gdb.COMMAND_OBSCURE)
+
+    def invoke(self, args, from_tty):
+        if len(args.split()) == 1:
+            img = data_extractor.extract_var(args)
+            y = np.arange(img.shape[0])
+            x = np.arange(img.shape[1])
+        else:
+            img = data_extractor.extract_var(args.split()[0])
+            x = data_extractor.extract_var(args.split()[1])
+            y = data_extractor.extract_var(args.split()[2])
+
+        if img.ndim != 2:
+            raise PlottingError(f"Unsuitable for imshow: {args}")
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        p = ax.imshow(np.log10(np.abs(img)),
+                      extent=(x[0]-0.5, x[-1]+0.5, y[0]-0.5, y[-1]+0.5),
+                      origin='lower',
+                      interpolation='none')
+        plt.colorbar(p)
+        plt.show()
+
         
 class Plot3D(gdb.Command):
     def __init__(self):
@@ -280,6 +306,7 @@ Plot()
 Imshow()
 Imshow0()
 Logshow()
+Abslogshow()
 Scatter()
 Plot3D()
 Scatter3D()
