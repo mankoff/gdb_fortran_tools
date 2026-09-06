@@ -176,7 +176,7 @@ savecsv xy.csv xy
 real*{4,8}, dimension(...)
 integer*{4,8}, dimension(...)
 logical
-complex*{8,16), dimension(...)
+complex*{4,8), dimension(...)
 #+END_SRC
 
 * Warnings

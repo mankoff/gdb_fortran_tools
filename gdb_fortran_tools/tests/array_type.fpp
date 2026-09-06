@@ -2,12 +2,12 @@
                ('i8' , 'integer(kind=8)' , 'int'  ),& 
                ('r4' , 'real(kind=4)'    , 'real' ),&
                ('r8' , 'real(kind=8)'    , 'real' ),&
-               ('c8' , 'complex(kind=4)' , 'cmplx'),&
-               ('c16', 'complex(kind=8)' , 'cmplx')]
+               ('c4' , 'complex(kind=4)' , 'cmplx'),&
+               ('c8', 'complex(kind=8)' , 'cmplx')]
 #:def dupdim(i)
 #{for j in range(i-1)}#:,#{endfor}#:
 #:enddef
-#:set MAX_DIM = 3
+#:set MAX_DIM = 6
 program test_array
  use iso_fortran_env
  implicit none
@@ -38,7 +38,7 @@ contains
         integer :: i
         ${type_decl}$, allocatable :: a(${dupdim(id)}$)
         a = reshape([(${cv}$(i),i=1,N)],[product([(i,i=max_dim,${id}$,-1)]),(i,i=(${id}$-1),1,-1)])
-        print '(a,i0)', "sum = ", nint(real(sum(a)),selected_int_kind(4))
+        print '(a,i0)', "sum = ", nint(real(sum(a)))
      end subroutine test_${type_name}$_${id}$d
   #:endfor
   subroutine test_logical_${id}$d()

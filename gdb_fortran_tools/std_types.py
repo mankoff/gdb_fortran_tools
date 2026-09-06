@@ -189,8 +189,9 @@ class FortranArray(TypeHandler):
               "integer(8)", "integer(kind=8)",
               "logical",
               "complex(8)", 
-              "complex(kind=8)",
-              "complex(kind=16)"]
+              "complex(4)", 
+              "complex(kind=4)",
+              "complex(kind=8)"]
              ])
 
     def shape(self, gdb_value: gdb.Value) -> Tuple[Optional[int], ...]:
@@ -215,14 +216,16 @@ class FortranArray(TypeHandler):
                   size = re_size.group()
            # nokin
            else:
-              re_nokind = re.search("\\((\\d+)\)", dtype)
+              re_nokind = re.search("\\((\\d+)\\)", dtype)
               if re_nokind:
                   kd = re_nokind.group()
-                  re_size = re.search("(\d+)", kd)
+                  re_size = re.search("(\\d+)", kd)
                   if re_size:
                      size = re_size.group()
         else:
            size = ""
+        if scalar == "c":
+            size = str(int(size)*2)
         self.np_dtype = np.dtype(scalar+size)
         return None
 

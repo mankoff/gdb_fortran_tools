@@ -1,17 +1,14 @@
-# some tests
-very first version of testing
+# Rationale
+- very first version of testing : test the `np sum array` command for all non-logical types
 
-# dependencies
+# Dependencies
 - gdb
 - gfortran
 - fypp
-- python
 
+Let us run `./runtests.py`
 
-let us run `python runtests.py`
-
-# todo 
- - test logical
- - compare the value computed by sum(a) and np sum a
- - display a 😀 when it works
-
+# TODO
+ - add test logical
+ - compare the value computed by `sum(a)` and `np sum a`
+ 
