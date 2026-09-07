@@ -187,7 +187,11 @@ class FortranArray(TypeHandler):
               "real(8)", "real(kind=8)",
               "integer(4)", "integer(kind=4)",
               "integer(8)", "integer(kind=8)",
-              "logical"]
+              "logical",
+              "complex(8)", 
+              "complex(4)", 
+              "complex(kind=4)",
+              "complex(kind=8)"]
              ])
 
     def shape(self, gdb_value: gdb.Value) -> Tuple[Optional[int], ...]:
@@ -197,31 +201,37 @@ class FortranArray(TypeHandler):
 
     def contained_type(self, gdb_value: gdb.Value) -> Optional[gdb.Type]:
         dtype = str(gdb.types.get_basic_type(gdb_value.type))
-        if "logical" in dtype:
-            size = "bool"
-        elif "kind=4" in dtype:
-            size = "f4"
-        elif "kind=8" in dtype:
-            size = "f8"
+        dtype = dtype.split(",")[0]
+        scalar = {"integer":"i", 
+                  "real":"f", 
+                  "complex":"c",
+                  "logical":"bool"}[dtype.split("(")[0]]
+        if scalar != "bool":
+           re_kind = re.search("\\(kind=(\\d+)\\)",dtype)
+           # kind = size
+           if re_kind: 
+              kd = re_kind.group()
+              re_size = re.search("(\\d+)", kd)
+              if re_size:
+                  size = re_size.group()
+           # nokin
+           else:
+              re_nokind = re.search("\\((\\d+)\\)", dtype)
+              if re_nokind:
+                  kd = re_nokind.group()
+                  re_size = re.search("(\\d+)", kd)
+                  if re_size:
+                     size = re_size.group()
         else:
-            size = "f4"
-
-        self.np_dtype = np.dtype(size)
+           size = ""
+        if scalar == "c":
+            size = str(int(size)*2)
+        self.np_dtype = np.dtype(scalar+size)
         return None
 
     def extract(self, gdb_value: gdb.Value, index: Tuple[int, ...]):
-        if np.shape(index)[0] == 1:
-            arr = np.array([gdb_value[i+1] for i in range(index[0])])
-        if np.shape(index)[0] == 2:
-            arr = np.zeros(index).T.astype(self.np_dtype)
-            for i in range(index[0]):
-                for j in range(index[1]):
-                    arr[j,i] = gdb_value[j+1][i+1]
-        if np.shape(index)[0] == 3:
-            arr = np.zeros(index).T.astype(self.np_dtype)
-            for i in range(index[0]):
-                for j in range(index[1]):
-                    for k in range(index[2]):
-                        arr[k,j,i] = gdb_value[k+1][j+1][i+1]
-        return arr.astype(self.np_dtype.type)
-
+        size_tot = np.prod(index)
+        addr = int(gdb_value.address)
+        buf = gdb.selected_inferior().read_memory(addr, size_tot * self.np_dtype.itemsize)
+        flat = np.frombuffer(buf, dtype=self.np_dtype)
+        return flat.reshape(index,order="F")

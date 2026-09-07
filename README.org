@@ -1,7 +1,8 @@
 
 * gdb_fortran_tools
 
-* Table of contents                               :toc_3:noexport:
+* Table of contents
+  :toc_3:noexport:
 :PROPERTIES:
 :CUSTOM_ID: toc
 :END:
@@ -172,9 +173,10 @@ savecsv xy.csv xy
 * Supported types
 
 #+BEGIN_SRC f90 :exports both
-real*{4,8}, dimension(:), dimension(:,:), dimension(:,:,:)
-integer*{4,8}, dimension(:), dimension(:,:), dimension(:,:,:)
+real*{4,8}, dimension(...)
+integer*{4,8}, dimension(...)
 logical
+complex*{4,8), dimension(...)
 #+END_SRC
 
 * Warnings
