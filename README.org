@@ -1,11 +1,11 @@
 
 * gdb_fortran_tools
 
-* Table of contents
-  :toc_3:noexport:
+* Table of contents                               :toc_3:noexport:
 :PROPERTIES:
 :CUSTOM_ID: toc
 :END:
+
 - [[#gdb_fortran_tools][gdb_fortran_tools]]
 - [[#introduction][Introduction]]
 - [[#installation][Installation]]
