@@ -230,5 +230,7 @@ end
 :CUSTOM_ID: ack
 :END:
 
-Thanks to [[https://github.com/X-Neon][X-Neon]] and [[https://github.com/X-Neon/gdbplotlib][gdbplotlib]].
+Thanks to
++ [[https://github.com/X-Neon][X-Neon]] and [[https://github.com/X-Neon/gdbplotlib][gdbplotlib]]
++ [[https://github.com/aitzkora][Marc Fuentes]] for adding tests, complex number support, and generic n-dimensional arrays
 
