@@ -36,7 +36,17 @@ class Save(gdb.Command):
         data = data_extractor.extract_var(var)
         data.tofile(filename)
 
+class SaveFlat(gdb.Command):
+    def __init__(self):
+        super(SaveFlat, self).__init__("save_flat", gdb.COMMAND_OBSCURE)
+
+    def invoke(self, args, from_tty):
+        filename, var = args.split()
+        data = data_extractor.extract_var(var)
+        data.flatten("F").tofile(filename)
+
 
 SaveCSV()
 SavePy()
 Save()
+SaveFlat()
