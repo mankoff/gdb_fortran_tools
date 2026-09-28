@@ -89,7 +89,7 @@ program main
 
   im = 4
   jm = 5
-  
+
   allocate(x(im))
   allocate(y(jm))
   allocate(xy(im,jm))
@@ -101,7 +101,7 @@ program main
         xy(i,j) = x(i)*y(j)
      end do
   end do
-  
+
   print *, x
   print *, y
   print *, xy
