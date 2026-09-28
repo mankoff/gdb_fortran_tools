@@ -104,7 +104,7 @@ program main
 
   print *, x
   print *, y
-  print *, xy
+  print *, xy ! line 23, set breakpoint here
 end program main
 #+END_SRC
 
